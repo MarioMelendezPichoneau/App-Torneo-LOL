@@ -1,0 +1,7 @@
+{
+  "name": "torneo-lolApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

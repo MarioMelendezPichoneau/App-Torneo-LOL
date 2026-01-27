@@ -1,0 +1,115 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text="Volver"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Inscripción al Torneo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="form-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>⚔️ Inscríbete al Torneo</ion-card-title>
+        <ion-card-subtitle>Completa tus datos de invocador</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form [formGroup]="inscripcionForm" (ngSubmit)="onSubmit()">
+          
+          <!-- Nombre de Invocador -->
+          <ion-item [class.ion-invalid]="f['invocador'].invalid && f['invocador'].touched">
+            <ion-label position="stacked">Nombre de Invocador</ion-label>
+            <ion-input 
+              formControlName="invocador" 
+              type="text"
+              placeholder="Tu nick en LOL"
+              maxlength="16">
+            </ion-input>
+            <ion-note slot="error" *ngIf="f['invocador'].errors?.['required'] && f['invocador'].touched">
+              El nombre es obligatorio
+            </ion-note>
+            <ion-note slot="error" *ngIf="f['invocador'].errors?.['minlength']">
+              Mínimo 3 caracteres
+            </ion-note>
+          </ion-item>
+
+          <!-- ELO -->
+          <ion-item [class.ion-invalid]="f['elo'].invalid && f['elo'].touched">
+            <ion-label position="stacked">ELO Actual</ion-label>
+            <ion-select formControlName="elo" interface="action-sheet" placeholder="Selecciona tu rango">
+              <ion-select-option *ngFor="let elo of elos" [value]="elo.valor">
+                {{ elo.label }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <!-- División -->
+          <ion-item>
+            <ion-label position="stacked">División</ion-label>
+            <ion-segment formControlName="division">
+              <ion-segment-button value="IV">
+                <ion-label>IV</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="III">
+                <ion-label>III</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="II">
+                <ion-label>II</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="I">
+                <ion-label>I</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </ion-item>
+
+          <!-- Posición -->
+          <ion-item [class.ion-invalid]="f['posicion'].invalid && f['posicion'].touched">
+            <ion-label position="stacked">Posición Principal</ion-label>
+            <ion-select formControlName="posicion" interface="popover" placeholder="Selecciona rol">
+              <ion-select-option *ngFor="let pos of posiciones" [value]="pos.valor">
+                {{ pos.valor }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <!-- Correo -->
+          <ion-item [class.ion-invalid]="f['correo'].invalid && f['correo'].touched">
+            <ion-label position="stacked">Correo Electrónico</ion-label>
+            <ion-input 
+              formControlName="correo" 
+              type="email"
+              placeholder="tu@email.com">
+            </ion-input>
+            <ion-note slot="error" *ngIf="f['correo'].errors?.['required'] && f['correo'].touched">
+              El correo es obligatorio
+            </ion-note>
+            <ion-note slot="error" *ngIf="f['correo'].errors?.['email']">
+              Formato de correo inválido
+            </ion-note>
+          </ion-item>
+
+          <!-- Info de plataforma -->
+          <ion-item lines="none" *ngIf="!plataformaNativa" class="platform-warning">
+            <ion-icon name="information-circle" slot="start" color="warning"></ion-icon>
+            <ion-label class="ion-text-wrap" color="medium" style="font-size: 0.9em;">
+              Estás en modo web. Se abrirá tu cliente de correo predeterminado.
+            </ion-label>
+          </ion-item>
+
+          <ion-button 
+            expand="block" 
+            type="submit" 
+            [disabled]="!inscripcionForm.valid || isSubmitting"
+            class="submit-btn"
+            size="large">
+            <ion-spinner *ngIf="isSubmitting" slot="start"></ion-spinner>
+            {{ isSubmitting ? 'Enviando...' : 'Confirmar Inscripción' }}
+          </ion-button>
+
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
