@@ -22,7 +22,7 @@ jobs:
         cache: 'npm'
 
     - name: Instalar dependencias
-      run: npm ci
+      run: npm install --legacy-peer-deps && npm ci
 
     - name: Build Ionic (Producción)
       run: npm run build -- --configuration production
