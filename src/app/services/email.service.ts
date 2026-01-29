@@ -16,21 +16,35 @@ export interface ApiResponse {
 }
 
 @Injectable({ providedIn: 'root' })
+
 export class EmailService {
+
+  // url de la api
   private API_URL = 'https://loldominicana.com/api/inscripcion.php';
 
   constructor(private http: HttpClient) {}
 
-  enviarInscripcion(data: EmailData): Observable<ApiResponse> {
-    const form = new FormData();
-    form.append('invocador', data.invocador);
-    form.append('elo', data.elo);
-    form.append('division', data.division);
-    form.append('posicion', data.posicion);
-    form.append('correo', data.correo);
+  async enviarInscripcion(data: EmailData): Promise<ApiResponse> {
+    try {
+      const response = await fetch(this.API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+          body: JSON.stringify(data)
+      })
 
+      const result = await response.json();
+      return result;
+
+    } catch (error) {
+      console.error('Error al enviar la inscripción:', error);
+      return { success: false, message: 'No se pudo conectar con el servidor.' };
+      throw error;
+    }
+   
     // OJO: NO pongas Content-Type manual con FormData
     // el navegador lo genera con boundary automáticamente.
-    return this.http.post<ApiResponse>(this.API_URL, form);
+    //return this.http.post<ApiResponse>(this.API_URL, formData);
   }
 }

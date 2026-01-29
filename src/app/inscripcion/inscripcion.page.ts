@@ -82,44 +82,40 @@ export class InscripcionPage implements OnInit {
     return this.inscripcionForm.controls;
   }
 
-  // 🔥 ESTE MÉTODO ERA EL QUE FALTABA
-async onSubmit() {
-  if (this.inscripcionForm.invalid || this.isSubmitting) return;
-
-  this.isSubmitting = true;
-
-  const loading = await this.loadingController.create({
-    message: 'Enviando inscripción...'
-  });
-  await loading.present();
-
-  try {
-    const formData: EmailData = this.inscripcionForm.value;
-
-    // 👇 AQUÍ VA EL console.log
-    console.log('FORM DATA 👉', formData);
-
-    const resultado = await firstValueFrom(
-      this.emailService.enviarInscripcion(formData)
-    );
-
-    await loading.dismiss();
-
-    if (resultado.success) {
-      await this.mostrarAlerta('Inscripción exitosa 🎉', resultado.message);
-      this.inscripcionForm.reset();
-    } else {
-      await this.mostrarAlertaError(resultado.message);
+  //  ESTE MÉTODO ERA EL QUE FALTABA
+  async onSubmit() {
+    if (this.inscripcionForm.invalid || this.isSubmitting) return;
+  
+    this.isSubmitting = true;
+    const loading = await this.loadingController.create({
+      message: 'Enviando inscripción...'
+    });
+    await loading.present();
+  
+    try {
+      const formData: EmailData = this.inscripcionForm.value;
+      console.log('FORM DATA 👉', formData);
+  
+      // 👇 AHORA ES AWAIT DIRECTO, no firstValueFrom ni subscribe
+      const resultado = await this.emailService.enviarInscripcion(formData);
+  
+      await loading.dismiss();
+  
+      if (resultado.success) {
+        await this.mostrarAlerta('¡Enviado! 🎉', resultado.message);
+        this.inscripcionForm.reset();
+      } else {
+        await this.mostrarAlertaError(resultado.message);
+      }
+  
+    } catch (error) {
+      await loading.dismiss();
+      console.error('ERROR 👉', error);
+      await this.mostrarAlertaError('Error de conexión. Intenta nuevamente.');
+    } finally {
+      this.isSubmitting = false;
     }
-
-  } catch (error) {
-    await loading.dismiss();
-    console.error('ERROR HTTP 👉', error);
-    await this.mostrarAlertaError('No se pudo conectar con el servidor.');
-  } finally {
-    this.isSubmitting = false;
   }
-}
 
 
   async mostrarAlerta(titulo: string, mensaje: string) {
