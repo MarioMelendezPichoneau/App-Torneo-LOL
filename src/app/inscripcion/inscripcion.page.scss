@@ -1,100 +1,113 @@
+/* ===============================
+   VARIABLES DE ESTILO LOL
+================================ */
+:root {
+  --lol-gold: #c9a227;
+  --lol-blue: #0f2027;
+  --lol-accent: #1e90ff;
+}
+
+/* ===============================
+   FONDO LOL (GRADIENTE + IMAGEN)
+================================ */
+.form-page-bg {
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 100%);
+  overflow: hidden;
+}
+
+.form-page-bg .bg-image {
+  position: absolute;
+  inset: 0;
+  background-image: url("/assets/img/fondo-lol.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+.form-page-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+
+/* ===============================
+   CONTENEDOR DEL FORMULARIO
+================================ */
 .form-container {
   max-width: 600px;
   margin: 0 auto;
   padding: 16px;
 }
 
-ion-card {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  border-radius: 12px;
-}
-
-ion-card-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--ion-color-primary);
-}
-
-ion-item {
-  --padding-start: 0;
-  --inner-padding-end: 0;
-  margin-bottom: 16px;
-  
-  &.ion-invalid.ion-touched {
-    --highlight-background: var(--ion-color-danger);
-  }
-}
-
-ion-segment {
-  margin-top: 8px;
-  background: var(--ion-color-light);
-  border-radius: 8px;
-  padding: 4px;
-}
-
-.submit-btn {
-  margin-top: 24px;
-  --border-radius: 8px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.platform-warning {
-  --background: var(--ion-color-warning-tint);
-  --border-radius: 8px;
-  margin: 16px 0;
-  
-  ion-icon {
-    font-size: 24px;
-  }
-}
-
-// Fix para selects en móvil
-ion-select::part(icon) {
-  color: var(--ion-color-primary);
-}
-
-ion-content {
-  --background: linear-gradient(135deg, #0f2027 0%, #203a43 100%);
-}
-
+/* ===============================
+   TARJETAS
+================================ */
 ion-card {
   background: rgba(15, 32, 39, 0.95);
   border: 1px solid rgba(201, 162, 39, 0.3);
+  border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  
+
   ion-card-title {
-    color: var(--ion-color-primary);
+    font-size: 1.5rem;
     font-weight: bold;
+    color: var(--lol-gold);
     text-transform: uppercase;
     letter-spacing: 1px;
   }
-  
+
   ion-card-subtitle {
     color: #888;
   }
 }
 
+/* ===============================
+   INPUTS
+================================ */
 ion-item {
   --background: transparent;
   --border-color: rgba(201, 162, 39, 0.3);
-  --highlight-color-focused: var(--ion-color-primary);
-  
+  --highlight-color-focused: var(--lol-gold);
+  margin-bottom: 16px;
+
+  &.ion-invalid.ion-touched {
+    --highlight-background: var(--ion-color-danger);
+  }
+
   ion-label {
-    color: #c9a227 !important;
+    color: #ffffff !important;
     font-weight: 500;
   }
-  
-  ion-input, ion-select {
+
+  ion-input,
+  ion-select {
     color: #fff;
     --placeholder-color: #666;
   }
 }
 
+/* ===============================
+   SELECTS
+================================ */
+ion-select::part(icon) {
+  color: var(--lol-gold);
+}
+
+/* ===============================
+   SEGMENT
+================================ */
 ion-segment {
+  margin-top: 8px;
   background: rgba(201, 162, 39, 0.1);
-  
+  border-radius: 8px;
+  padding: 4px;
+
   ion-segment-button {
     --color: #888;
     --color-checked: #0f2027;
@@ -103,14 +116,31 @@ ion-segment {
   }
 }
 
+/* ===============================
+   BOTÓN ENVIAR
+================================ */
 .submit-btn {
-  --background: linear-gradient(135deg, #c9a227 0%, #f4d03f 100%);
+  --background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
   --color: #0f2027;
+  --border-radius: 8px;
   font-weight: bold;
-  margin-top: 20px;
+  margin-top: 24px;
   height: 50px;
   font-size: 1.1rem;
   text-transform: uppercase;
   letter-spacing: 1px;
   box-shadow: 0 4px 15px rgba(201, 162, 39, 0.3);
+}
+
+/* ===============================
+   ALERTA PLATAFORMA
+================================ */
+.platform-warning {
+  --background: var(--ion-color-warning-tint);
+  --border-radius: 8px;
+  margin: 16px 0;
+
+  ion-icon {
+    font-size: 24px;
+  }
 }

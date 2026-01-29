@@ -1,9 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, IonicModule, LoadingController, Platform } from '@ionic/angular';
+import {
+  AlertController,
+  IonicModule,
+  LoadingController,
+  Platform
+} from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { EmailService, EmailData } from 'src/app/services/email.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-inscripcion',
@@ -14,11 +26,10 @@ import { EmailService, EmailData } from 'src/app/services/email.service';
 })
 export class InscripcionPage implements OnInit {
 
-  inscripcionForm: FormGroup;
+  inscripcionForm!: FormGroup;
   isSubmitting = false;
   plataformaNativa = false;
 
-  // Rangos de LOL para validación dinámica
   elos = [
     { valor: 'Hierro', label: 'Hierro' },
     { valor: 'Bronce', label: 'Bronce' },
@@ -28,95 +39,105 @@ export class InscripcionPage implements OnInit {
     { valor: 'Diamante', label: 'Diamante' },
     { valor: 'Maestro', label: 'Maestro' },
     { valor: 'Gran Maestro', label: 'Gran Maestro' },
-    { valor: 'Challenger', label: 'Challenger' }
+    { valor: 'Retador', label: 'Retador' }
+  ];
+
+  divisiones = [
+    { valor: 'I', label: 'I' },
+    { valor: 'II', label: 'II' },
+    { valor: 'III', label: 'III' },
+    { valor: 'IV', label: 'IV' }
   ];
 
   posiciones = [
-    { valor: 'Top', icon: 'shield' },
-    { valor: 'Jungla', icon: 'footsteps' },
-    { valor: 'Mid', icon: 'flash' },
-    { valor: 'ADC', icon: 'bow-arrow' },
-    { valor: 'Support', icon: 'heart' }
+    { valor: 'Top' },
+    { valor: 'Jungla' },
+    { valor: 'Mid' },
+    { valor: 'ADC' },
+    { valor: 'Support' }
   ];
 
   constructor(
-    private formBuilder: FormBuilder,
+    private fb: FormBuilder,
     private router: Router,
     private alertController: AlertController,
     private loadingController: LoadingController,
     private emailService: EmailService,
     private platform: Platform
-  ) {
-    this.inscripcionForm = this.formBuilder.group({
+  ) {}
+
+  ngOnInit() {
+    this.inscripcionForm = this.fb.group({
       invocador: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(16)]],
       elo: ['', Validators.required],
-      division: ['IV', Validators.required], // Default IV
+      division: ['', Validators.required],
       posicion: ['', Validators.required],
       correo: ['', [Validators.required, Validators.email]]
     });
-    
+
     this.plataformaNativa = this.platform.is('hybrid');
   }
 
-  ngOnInit() {}
-
-  get f() { return this.inscripcionForm.controls; }
-
-  async onSubmit() {
-    if (this.inscripcionForm.invalid || this.isSubmitting) return;
-
-    this.isSubmitting = true;
-    
-    const loading = await this.loadingController.create({
-      message: 'Enviando inscripción...',
-      spinner: 'circles'
-    });
-    await loading.present();
-
-    try {
-      const formData: EmailData = this.inscripcionForm.value;
-      const resultado = await this.emailService.enviarInscripcion(formData);
-      
-      await loading.dismiss();
-      
-      if (resultado.success) {
-        await this.mostrarAlertaExito(resultado.message);
-        this.inscripcionForm.reset({ division: 'IV' }); // Reset con default
-        this.router.navigate(['/home']);
-      } else {
-        await this.mostrarAlertaError(resultado.message);
-      }
-    } catch (error) {
-      await loading.dismiss();
-      await this.mostrarAlertaError('Error inesperado. Inténtalo nuevamente.');
-      console.error(error);
-    } finally {
-      this.isSubmitting = false;
-    }
+  get f() {
+    return this.inscripcionForm.controls;
   }
 
-  async mostrarAlertaExito(mensaje: string) {
+  // 🔥 ESTE MÉTODO ERA EL QUE FALTABA
+async onSubmit() {
+  if (this.inscripcionForm.invalid || this.isSubmitting) return;
+
+  this.isSubmitting = true;
+
+  const loading = await this.loadingController.create({
+    message: 'Enviando inscripción...'
+  });
+  await loading.present();
+
+  try {
+    const formData: EmailData = this.inscripcionForm.value;
+
+    // 👇 AQUÍ VA EL console.log
+    console.log('FORM DATA 👉', formData);
+
+    const resultado = await firstValueFrom(
+      this.emailService.enviarInscripcion(formData)
+    );
+
+    await loading.dismiss();
+
+    if (resultado.success) {
+      await this.mostrarAlerta('Inscripción exitosa 🎉', resultado.message);
+      this.inscripcionForm.reset();
+    } else {
+      await this.mostrarAlertaError(resultado.message);
+    }
+
+  } catch (error) {
+    await loading.dismiss();
+    console.error('ERROR HTTP 👉', error);
+    await this.mostrarAlertaError('No se pudo conectar con el servidor.');
+  } finally {
+    this.isSubmitting = false;
+  }
+}
+
+
+  async mostrarAlerta(titulo: string, mensaje: string) {
     const alert = await this.alertController.create({
-      header: '¡Inscripción Exitosa! 🎮',
+      header: titulo,
       message: mensaje,
-      buttons: [{
-        text: 'OK',
-        handler: () => {
-          this.router.navigate(['/home']);
-        }
-      }],
-      backdropDismiss: false
+      buttons: ['OK']
     });
     await alert.present();
   }
 
   async mostrarAlertaError(mensaje: string) {
     const alert = await this.alertController.create({
-      header: 'Error ❌',
+      header: 'Error',
       message: mensaje,
-      buttons: ['Entendido'],
-      cssClass: 'alert-error'
+      buttons: ['OK']
     });
     await alert.present();
   }
 }
+

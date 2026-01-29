@@ -29,7 +29,7 @@
 // Estilos para el logo
 /*
 body, .home-page-bg {
-  background-image: url("/assets/icon/fondo-lol.jpg");
+  background-image: url("/assets/img/fondo-lol.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -91,21 +91,27 @@ ion-button {
 }
 
 .home-page-bg {
-  --background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  --background: transparent;
   position: relative;
-  
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  overflow: hidden;
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url("../../assets/img/fondo-lol.jpg") center/cover no-repeat;
+    inset: 0;
+    background: url("/assets/img/fondo-lol.jpg") center / cover no-repeat;
     opacity: 0.3;
-    z-index: -1;
+    z-index: 0;
   }
 }
+
+.home-page-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
 
 #container {
   display: flex;
@@ -117,11 +123,11 @@ ion-button {
   text-align: center;
   
   ion-img {
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    height: 300px;
     filter: drop-shadow(0 0 20px rgba(201, 162, 39, 0.6));
     animation: float 3s ease-in-out infinite;
-    margin-bottom: 30px;
+    margin-bottom: 5px;
   }
   
   h1 {

@@ -7,11 +7,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <div class="form-container">
+<ion-content [fullscreen]="true">
+  <div class="form-page-bg">
+    <div class="bg-image"></div>
+    <div class="form-container">
     <ion-card>
       <ion-card-header>
-        <ion-card-title>⚔️ Inscríbete al Torneo</ion-card-title>
+        <ion-card-title>Inscríbete al Torneo ⚔️</ion-card-title>
         <ion-card-subtitle>Completa tus datos de invocador</ion-card-subtitle>
       </ion-card-header>
 
@@ -24,7 +26,7 @@
             <ion-input 
               formControlName="invocador" 
               type="text"
-              placeholder="Tu nick en LOL"
+              placeholder="Tu nombre del Invocador"
               maxlength="16">
             </ion-input>
             <ion-note slot="error" *ngIf="f['invocador'].errors?.['required'] && f['invocador'].touched">
@@ -37,7 +39,7 @@
 
           <!-- ELO -->
           <ion-item [class.ion-invalid]="f['elo'].invalid && f['elo'].touched">
-            <ion-label position="stacked">ELO Actual</ion-label>
+            <ion-label position="stacked">Rango actual</ion-label>
             <ion-select formControlName="elo" interface="action-sheet" placeholder="Selecciona tu rango">
               <ion-select-option *ngFor="let elo of elos" [value]="elo.valor">
                 {{ elo.label }}
@@ -45,23 +47,14 @@
             </ion-select>
           </ion-item>
 
-          <!-- División -->
-          <ion-item>
-            <ion-label position="stacked">División</ion-label>
-            <ion-segment formControlName="division">
-              <ion-segment-button value="IV">
-                <ion-label>IV</ion-label>
-              </ion-segment-button>
-              <ion-segment-button value="III">
-                <ion-label>III</ion-label>
-              </ion-segment-button>
-              <ion-segment-button value="II">
-                <ion-label>II</ion-label>
-              </ion-segment-button>
-              <ion-segment-button value="I">
-                <ion-label>I</ion-label>
-              </ion-segment-button>
-            </ion-segment>
+                    <!-- Division-->
+          <ion-item [class.ion-invalid]="f['division'].invalid && f['division'].touched">
+            <ion-label position="stacked">Division actual</ion-label>
+            <ion-select formControlName="division" interface="action-sheet" placeholder="Selecciona tu division">
+              <ion-select-option *ngFor="let division of divisiones" [value]="division.valor">
+                {{ division.label }}
+              </ion-select-option>
+            </ion-select>
           </ion-item>
 
           <!-- Posición -->
@@ -112,4 +105,5 @@
       </ion-card-content>
     </ion-card>
   </div>
+</div>
 </ion-content>
