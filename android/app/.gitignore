@@ -1,2 +1,8 @@
 /build/*
 !/build/.npmkeep
+
+android/
+ios/
+node_modules/
+www/
+dist/
