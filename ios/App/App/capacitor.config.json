@@ -1,0 +1,14 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "Lol Dominicana",
+	"webDir": "www",
+	"packageClassList": [
+		"AppPlugin",
+		"HapticsPlugin",
+		"CAPHttpPlugin",
+		"KeyboardPlugin",
+		"SplashScreenPlugin",
+		"StatusBarPlugin",
+		"EmailComposerPlugin"
+	]
+}
