@@ -1,13 +1,11 @@
 {
 	"appId": "io.ionic.starter",
-	"appName": "Lol Dominicana",
+	"appName": "torneo-lolApp",
 	"webDir": "www",
 	"packageClassList": [
 		"AppPlugin",
 		"HapticsPlugin",
-		"CAPHttpPlugin",
 		"KeyboardPlugin",
-		"SplashScreenPlugin",
 		"StatusBarPlugin",
 		"EmailComposerPlugin"
 	]
