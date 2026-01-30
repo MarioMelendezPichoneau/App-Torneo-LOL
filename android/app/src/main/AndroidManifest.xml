@@ -18,9 +18,7 @@
             android:theme="@style/AppTheme.NoActionBarLaunch"
             android:launchMode="singleTask"
             android:exported="true"
-            android:configChanges="orientation|keyboardHidden|keyboard|
-                                   screenSize|locale|smallestScreenSize|
-                                   screenLayout|uiMode|navigation">
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +29,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:="${applicationId}.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
 
