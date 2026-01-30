@@ -2,9 +2,9 @@ name: Build Android APK - Torneo LOL
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master, test ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, test ]
   workflow_dispatch:  # Botón manual para ejecutar cuando quieras
 
 jobs:
@@ -53,17 +53,17 @@ jobs:
     - name: Subir APK como artifact
       uses: actions/upload-artifact@v4
       with:
-        name: Torneo-LOL-APK
+        name: Torneo-LOL-${{ github.ref_name }}
         path: android/app/build/outputs/apk/debug/app-debug.apk
         retention-days: 5  # Guardar el APK 5 días
 
     - name: Renombrar APK para descarga
       run: |
         mkdir -p release
-        cp android/app/build/outputs/apk/debug/app-debug.apk release/Torneo-LOL-v1.0.apk
+        cp android/app/build/outputs/apk/debug/app-debug.apk release/Torneo-LOL-${{ github.ref_name }}-v1.0.apk
 
     - name: Subir APK renombrado
       uses: actions/upload-artifact@v4
       with:
-        name: Torneo-LOL-Instalable
-        path: release/Torneo-LOL-v1.0.apk
+        name: Torneo-LOL-Instalable-${{ github.ref_name }}
+        path: release/Torneo-LOL-${{ github.ref_name }}-v1.0.apk
