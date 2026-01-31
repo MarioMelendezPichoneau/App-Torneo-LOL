@@ -15,14 +15,6 @@ const routes: Routes = [
     path: 'inscripcion',
     loadChildren: () => import('./inscripcion/inscripcion.module').then( m => m.InscripcionPageModule)
   },
-  {
-    path: 'news',
-    loadChildren: () => import('./pages/news/news.module').then( m => m.NewsPageModule)
-  },
-  {
-    path: 'news-detail',
-    loadChildren: () => import('./pages/news-detail/news-detail.module').then( m => m.NewsDetailPageModule)
-  },
   
 ];
 
